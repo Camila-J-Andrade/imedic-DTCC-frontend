@@ -1,8 +1,8 @@
-import {Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Image, View} from 'react-native';
+import {Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Image, View, Pressable} from 'react-native';
 import React, {useState} from 'react';
 
 
-export default function App() {
+export default function Login({ navigation }) {
 
 const [email, setEmail] = useState('');
 const [senha, setSenha] = useState('');
@@ -15,8 +15,8 @@ const Login = () => {
 
   return (
     <ScrollView style={styles.scroll}>
-    <View>
-    <Image source = {require('./assets/Group 2Logotipo I-Medic (1) 1logo.png')} style={styles.logo}></Image>
+    <View style={styles.container2}>
+    <Image source = {require('../assets/imediclogo.png')} style={styles.logo}></Image>
        <TextInput
          style= {styles.input}
          placeholder= "E-mail"
@@ -31,8 +31,11 @@ const Login = () => {
          onChangeText = {setSenha}
          keyboardType="default"
          />
+         <Pressable>
+          <Text style={styles.SubTituloSenha}>Esqueci a Senha</Text>
+         </Pressable>
          </View>
-         <View>
+         <View style={styles.ButtonsDiv}>
         <TouchableOpacity style={styles.botao} onPress={login}>
         <Text style={styles.textBotao}>Login</Text>
         </TouchableOpacity>
@@ -40,7 +43,7 @@ const Login = () => {
         <Text style={styles.textBotao2}>Não possuo cadastro</Text>
         </TouchableOpacity>
       </View>
-      <Image source = {require('./assets/logotipo tech flint.png')} style = {styles.logo2}></Image>
+      {/* <Image source = {require('./assets/logotipo tech flint.png')} style = {styles.logo2}></Image> */}
     </ScrollView>
   );
 }
@@ -48,11 +51,26 @@ const Login = () => {
 const styles = StyleSheet.create({
   scroll: {
     flex: 1,
-    justifyContent: 'center',
+    // justifyContent: 'center',
     backgroundColor: '#fff6ee',
     padding: 8,
-    alignItems: 'center',
+    // alignItems: 'center',
   },
+  SubTituloSenha: {
+    color: '#A9A9A9',
+    justifyContent: 'center',
+    fontSize: '10',
+  },
+  container2: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FFF6EE',
+    padding: 8,
+    },
+    ButtonsDiv: {
+     marginTop: 54
+    },
   logo: {
     width: 120,
     height: 124,
@@ -89,6 +107,7 @@ const styles = StyleSheet.create({
     borderRadius: 26,
     marginTop: 130,
     marginBottom: 15,
+    justifyContent: 'center'
   },
   textBotao: {
     textAlign: 'center',
