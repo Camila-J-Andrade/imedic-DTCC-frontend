@@ -1,4 +1,4 @@
-import {Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Image, View, Pressable} from 'react-native';
+import {Alert, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Image, View, Pressable} from 'react-native';
 import React, {useState} from 'react';
 
 
@@ -36,7 +36,22 @@ const Login = () => {
          </Pressable>
          </View>
          <View style={styles.ButtonsDiv}>
-        <TouchableOpacity style={styles.botao} onPress={login}>
+        <TouchableOpacity style={styles.botao} onPress={() =>  fetch("http://localhost:3333/login/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        senha: senha
+      }),
+    })
+  .then((response) => response.json())
+  .then((responseData) => {
+    //navigation.navigate("Login")
+    console.log("OK pressionado")
+  }) }>
         <Text style={styles.textBotao}>Login</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.botao2} onPress={cadastro}>

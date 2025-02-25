@@ -6,7 +6,7 @@ const splash = ({ navigation }) => {
     // Timer para mudar de tela após 3 segundos
     const timer = setTimeout(() => {
       navigation.replace("Dashboard");
-    }, 7000);
+    }, 5000);
 
     return () => clearTimeout(timer); // Limpa o timer ao desmontar
   }, [navigation]);
