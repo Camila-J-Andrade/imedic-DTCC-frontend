@@ -1,4 +1,4 @@
-import {Alert, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Image, View, Pressable} from 'react-native';
+import { Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Image, View, Pressable} from 'react-native';
 import React, {useState} from 'react';
 
 
@@ -49,7 +49,7 @@ const Login = () => {
     })
   .then((response) => response.json())
   .then((responseData) => {
-    //navigation.navigate("Login")
+    navigation.navigate("Home1")
     console.log("OK pressionado")
   }) }>
         <Text style={styles.textBotao}>Login</Text>
@@ -66,10 +66,8 @@ const Login = () => {
 const styles = StyleSheet.create({
   scroll: {
     flex: 1,
-    // justifyContent: 'center',
     backgroundColor: '#fff6ee',
     padding: 8,
-    // alignItems: 'center',
   },
   SubTituloSenha: {
     color: '#A9A9A9',
@@ -83,8 +81,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF6EE',
     padding: 8,
     },
-    ButtonsDiv: {
-     marginTop: 54
+  ButtonsDiv: {
+    marginTop: 54,
+    alignItems: 'center',
+    justifyContent: 'center',
     },
   logo: {
     width: 120,
@@ -115,14 +115,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
    botao: {
-    backgroundColor: '#FFE79D',
+    backgroundColor: '#89EBF6',
     width: 234,
     height: 29,
     padding: 5,
     borderRadius: 26,
-    marginTop: 130,
+    marginTop: 30,
     marginBottom: 15,
-    justifyContent: 'center'
+    justifyContent: 'flex-start',
   },
   textBotao: {
     textAlign: 'center',
