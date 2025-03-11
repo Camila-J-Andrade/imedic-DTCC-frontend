@@ -13,7 +13,7 @@ const splash = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require ('../assets/splashOficial.png')} style={styles.img}></Image>
+      <Image source={require ('../assets/imedicSplash.gif')} style={styles.img}></Image>
     </View>
   );
 };
@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#89EBF6",
   },
   img: {
-    width: 380,
-    height: 700,
-    resizeMode: 'cover'
+    width: 209,
+    height: 61,
+    // resizeMode: 'cover'
   },
 });
