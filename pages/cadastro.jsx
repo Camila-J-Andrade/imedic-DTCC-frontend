@@ -1,52 +1,23 @@
 import { StyleSheet, TextInput, Image, TouchableOpacity, Text, View } from 'react-native';
+import { useState } from 'react';
 import { Pressable } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Cadastro({ navigation }) {
-  return (
-    <SafeAreaView style={styles.container2}>
-      <View style={styles.container1}>
-        <Image style={styles.logo} source={require("../assets/imediclogo.png")}></Image>
+  
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [confirma_Senha, setConfirma_Senha] = useState('');
+  const [data_nasc, setDataNasc] = useState('');
 
-        <TextInput
-          placeholder= 'Nome'
-          placeholderTextColor= '#ADADAD'
-          keyboardType='text'
-          style ={styles.input}
-        />
+  const handleCadastro = () => {
+    if (senha !== confirma_Senha) {
+      alert('As senhas devem ser iguais');
+      return;
+    }
 
-        <TextInput
-          placeholder= 'E-mail'
-          placeholderTextColor= '#ADADAD'
-          keyboardType='text'
-          style ={styles.input}
-        />
-
-        <TextInput
-          placeholder= 'Data de Nascimento'
-          placeholderTextColor= '#ADADAD'
-          keyboardType='text'
-          style ={styles.input}
-        />
-
-        <TextInput
-          placeholder= 'Senha'
-          placeholderTextColor= '#ADADAD'
-          keyboardType='text'
-          style ={styles.input}
-        />
-
-        <TextInput
-          placeholder= 'Confirmação da senha'
-          placeholderTextColor= '#ADADAD'
-          keyboardType='text'
-          style ={styles.input}
-        />
-
-        <View style={styles.buttonsDiv}>
-
-          <TouchableOpacity style={styles.button} onPress={() =>  fetch("http://localhost:3333/userController/", {
+    fetch("http://localhost:3333/userController/", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -60,25 +31,79 @@ export default function Cadastro({ navigation }) {
       }),
     })
     .then((response) => response.json())
-  .then((responseData) => {
-    console.log("Cadastro bem-sucedido");
-    navigation.navigate("Login")
-    console.log("Cadastro Feito")
-  }) }> 
-            <Text style={styles.textButton} >Cadastrar </Text>
+    .then((responseData) => {
+      console.log("Cadastro bem-sucedido", responseData);
+      navigation.navigate("Login");
+    })
+    .catch((error) => {
+      console.error("Erro ao cadastrar:", error);
+    });
+  };
+
+  return (
+    <SafeAreaView style={styles.container2}>
+      <View style={styles.container1}>
+        <Image style={styles.logo} source={require("../assets/imediclogo.png")} />
+
+        <TextInput
+          placeholder='Nome'
+          placeholderTextColor='#ADADAD'
+          keyboardType='default'
+          style={styles.input}
+          value={nome}
+          onChangeText={setNome}
+        />
+
+        <TextInput
+          placeholder='E-mail'
+          placeholderTextColor='#ADADAD'
+          keyboardType='email-address'
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+        />
+
+        <TextInput
+          placeholder='Data de Nascimento'
+          placeholderTextColor='#ADADAD'
+          keyboardType='default'
+          style={styles.input}
+          value={data_nasc}
+          onChangeText={setDataNasc}
+        />
+
+        <TextInput
+          placeholder='Senha'
+          placeholderTextColor='#ADADAD'
+          secureTextEntry
+          style={styles.input}
+          value={senha}
+          onChangeText={setSenha}
+        />
+
+        <TextInput
+          placeholder='Confirmação da senha'
+          placeholderTextColor='#ADADAD'
+          secureTextEntry
+          style={styles.input}
+          value={confirma_Senha}
+          onChangeText={setConfirma_Senha}
+        />
+
+        <View style={styles.buttonsDiv}>
+          <TouchableOpacity style={styles.button} onPress={handleCadastro}> 
+            <Text style={styles.textButton}>Cadastrar</Text>
           </TouchableOpacity>
           
-          <Pressable style={styles.button2}>
-            <Text style={styles.textButton2} onPress={() => navigation.navigate("Login")}>Já possuo cadastro</Text>
+          <Pressable style={styles.button2} onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.textButton2}>Já possuo cadastro</Text>
           </Pressable>
         </View>
-
-        {/* <Image style={styles.logoTech} source={require("./assets/logo.png")}></Image> */}
-
       </View>
     </SafeAreaView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container1: {
