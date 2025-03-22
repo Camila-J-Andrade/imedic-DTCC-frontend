@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 
-const splash = ({ navigation }) => {
+const Splash = ({ navigation }) => {
   useEffect(() => {
     // Timer para mudar de tela após 3 segundos
     const timer = setTimeout(() => {
@@ -18,7 +18,7 @@ const splash = ({ navigation }) => {
   );
 };
 
-export default splash;
+export default Splash;
 
 const styles = StyleSheet.create({
   container: {

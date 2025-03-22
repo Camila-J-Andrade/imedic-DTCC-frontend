@@ -62,7 +62,7 @@ export default function Login({ navigation }) {
         </Pressable>
       </View>
 
-      {error ? <Text>{error}</Text> : null} {/* Exibe mensagem de erro */}
+      {error ? <Text style={{ color: 'red' }}>{String(error)}</Text> : null}
 
       <View style={styles.ButtonsDiv}>
         <TouchableOpacity style={styles.botao} onPress={hadlelogin}>
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   SubTituloSenha: {
     color: '#A9A9A9',
     justifyContent: 'center',
-    fontSize: '10',
+    fontSize: 10  
   },
   container2: {
     flex: 1,
