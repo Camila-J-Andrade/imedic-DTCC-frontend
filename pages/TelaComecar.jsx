@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function DashboardScreen({ navigation }) {
   return (
@@ -14,9 +15,17 @@ export default function DashboardScreen({ navigation }) {
       {/* Nome da Aplicação */}
       <Text style={styles.appName}>i-medic.</Text>
 
-      {/* Botão Começar */}
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Login")}>
-        <Text style={styles.buttonText}>Começar</Text>
+      {/* Botão Começar com Gradiente */}
+      <TouchableOpacity onPress={() => navigation.navigate("Login")} activeOpacity={0.7}>
+        <LinearGradient
+          colors={["#006B9C", "#09B2FF", "#006B9C"]}
+          locations={[0.16, 0.49, 0.83]} // Parâmetro "locations" reflete as paradas do Figma
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 0 }}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Começar</Text>
+        </LinearGradient>
       </TouchableOpacity>
 
       {/* Logo do rodapé */}
@@ -34,21 +43,31 @@ const styles = StyleSheet.create({
   },
   topBarLight: {
     position: "absolute",
-    top: 40,
-    left: 30,
-    width: 120,
-    height: 20,
+    top: 71+50,
+    left: -10,
+    width: 209,
+    height: 27,
     backgroundColor: "#89EBF6",
-    borderRadius: 10,
+    borderRadius: 14,
+    elevation: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
   },
   topBarDark: {
     position: "absolute",
-    top: 80,
-    right: 50,
-    width: 90,
-    height: 20,
+    top: 136+50,
+    right: -10,
+    width: 147,
+    height: 27,
     backgroundColor: "#1C6789",
-    borderRadius: 10,
+    borderRadius: 14,
+    elevation: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.9,
+    shadowRadius: 5,
   },
   logo: {
     width: 120,
@@ -56,27 +75,32 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   appName: {
-    color: "#006B9B",
     fontSize: 32,
     fontWeight: "bold",
-    marginBottom: 50,
+    color: "#006B9B",
+    marginBottom: 140,
   },
   button: {
-    backgroundColor: "#006B9C",
     paddingVertical: 12,
     paddingHorizontal: 60,
-    borderRadius: 10,
-    elevation: 4,
+    borderRadius: 14,
+    elevation: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
   buttonText: {
     color: "#FFF",
     fontSize: 20,
     fontWeight: "bold",
+    textAlign: "center",
   },
   footerLogo: {
-    width: 50,
-    height: 50,
+    width: 40+10,
+    height: 65+10,
     position: "absolute",
-    bottom: 20,
+    bottom: 40,
   },
 });
+
