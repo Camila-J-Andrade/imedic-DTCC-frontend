@@ -46,6 +46,7 @@ export default function Login({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="E-mail"
+          placeholderTextColor='#ADADAD'
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address" // Corrigido
@@ -53,6 +54,7 @@ export default function Login({ navigation }) {
         <TextInput
           style={styles.input}
           placeholder="Senha"
+          placeholderTextColor='#ADADAD'
           value={senha}
           onChangeText={setSenha}
           secureTextEntry
@@ -86,21 +88,23 @@ const styles = StyleSheet.create({
   },
   SubTituloSenha: {
     color: '#A9A9A9',
-    justifyContent: 'center',
-    fontSize: 10  
+    textAlign: 'left',
+    fontSize: 14,
+    width: 265 
   },
   container2: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFF6EE',
     padding: 8,
-    },
+    paddingTop: 149,
+    marginBottom: 265
+  },
   ButtonsDiv: {
-    marginTop: 54,
     alignItems: 'center',
     justifyContent: 'center',
-    },
+    marginBottom: 107
+  },
   logo: {
     width: 120,
     height: 124,
@@ -111,27 +115,22 @@ const styles = StyleSheet.create({
     padding: 50,
     marginBottom: 35,
   },
-  logo2: {
-    width: 55,
-    height: 62,
-    marginTop: 10,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    resizeMode: 'contain',
-  },
   input: {
-    height: 29,
-    width: 234,
+    height: 30,
+    width: 300,
     borderColor: '#34C0FF',
     borderWidth: 2,
     borderRadius: 18,
     marginTop: 20,
-    paddingHorizontal: 5,
     backgroundColor: 'white',
+    paddingHorizontal: 15,
+    paddingVertical: 0,
+    fontSize: 16,
+    textAlignVertical: 'center',
   },
-   botao: {
+  botao: {
     backgroundColor: '#89EBF6',
-    width: 234,
+    width: 300,
     height: 29,
     padding: 5,
     borderRadius: 26,
@@ -143,9 +142,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black'
   },
-   botao2: {
+  botao2: {
     backgroundColor: '#D9D9D9',
-    width: 234,
+    width: 300,
     height: 29,
     padding: 5,
     borderRadius: 26,
@@ -154,5 +153,5 @@ const styles = StyleSheet.create({
   textBotao2: {
     textAlign: 'center',
     color: '#8B8B8B'
-  }  
+  }   
 })
