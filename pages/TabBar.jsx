@@ -5,11 +5,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './home1';
 import SettingsScreen from './configuracaoScreen';
 import AlarmScreen from './alameScreen';
+import GeoScreen from './geolocation';
 
 // Importando Botões:
 import ButtonHome from '../components/ButtonHome';
 import ButtonAlarm from '../components/ButtonAlarm';
 import ButtonSettings from '../components/ButtonSettings';
+import ButtonGeo from '../components/ButtonGeo';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,6 +45,16 @@ export default function HomeWithTabs() {
           tabBarLabel: '',
           tabBarIcon: ({ focused, size }) => (
             <ButtonAlarm size={size} focused={focused} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Map"
+        component={GeoScreen}
+        options={{
+          tabBarLabel: '',
+          tabBarIcon: ({ focused, size }) => (
+            <ButtonGeo size={size} focused={focused} />
           ),
         }}
       />

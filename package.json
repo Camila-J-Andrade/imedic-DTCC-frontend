@@ -11,10 +11,13 @@
   "dependencies": {
     "@expo/metro-runtime": "~4.0.1",
     "@react-native-community/datetimepicker": "8.2.0",
+    "@react-native-picker/picker": "^2.11.0",
     "@react-navigation/bottom-tabs": "^7.2.1",
     "@react-navigation/native": "^7.0.15",
     "@react-navigation/stack": "^7.1.2",
     "expo": "~52.0.42",
+    "expo-linear-gradient": "~14.0.2",
+    "expo-location": "~18.0.10",
     "expo-router": "~4.0.20",
     "expo-status-bar": "~2.0.1",
     "imedic-frontend": "file:",
@@ -25,14 +28,15 @@
     "react-native-dev-menu": "^4.1.1",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-linear-gradient": "^2.8.3",
+    "react-native-maps": "1.18.0",
+    "react-native-radio-buttons-group": "^3.1.0",
     "react-native-reanimated": "^3.16.7",
     "react-native-safe-area-context": "^4.12.0",
     "react-native-screens": "~4.4.0",
     "react-native-svg": "15.8.0",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13",
-    "yet": "^0.1.0",
-    "expo-linear-gradient": "~14.0.2"
+    "yet": "^0.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

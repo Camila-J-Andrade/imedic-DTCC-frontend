@@ -1,10 +1,9 @@
-import { StyleSheet, TextInput, Image, TouchableOpacity, Text, View } from 'react-native';
+import { StyleSheet, TextInput, Image, TouchableOpacity, Text, View, Alert, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Cadastro({ navigation }) {
-  
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -12,12 +11,17 @@ export default function Cadastro({ navigation }) {
   const [data_nasc, setDataNasc] = useState('');
 
   const handleCadastro = () => {
-    if (senha !== confirma_Senha) {
-      alert('As senhas devem ser iguais');
+    if (!nome || !email || !data_nasc || !senha || !confirma_Senha) {
+      Alert.alert('Atenção', 'Preencha todos os campos.');
       return;
     }
 
-    fetch("http://localhost:3333/userController/", {
+    if (senha !== confirma_Senha) {
+      Alert.alert('Atenção', 'As senhas devem ser iguais.');
+      return;
+    }
+
+    fetch("http://34.151.222.98:3333/user/", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -30,18 +34,31 @@ export default function Cadastro({ navigation }) {
         senha: senha
       }),
     })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Erro no cadastro");
+      }
+      return response.json();
+    })
     .then((responseData) => {
-      console.log("Cadastro bem-sucedido", responseData);
+      Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
+      // Limpa os campos
+      setNome('');
+      setEmail('');
+      setSenha('');
+      setConfirma_Senha('');
+      setDataNasc('');
+      // Vai pra tela de login
       navigation.navigate("Login");
     })
     .catch((error) => {
       console.error("Erro ao cadastrar:", error);
+      Alert.alert("Erro", "Falha ao realizar o cadastro. Tente novamente.");
     });
   };
 
   return (
-    <SafeAreaView style={styles.container2}>
+    <ScrollView style={styles.container2}>
       <View style={styles.container1}>
         <Image style={styles.logo} source={require("../assets/imediclogo.png")} />
 
@@ -100,10 +117,9 @@ export default function Cadastro({ navigation }) {
           </Pressable>
         </View>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
-
 
 const styles = StyleSheet.create({
   container1: {
@@ -129,7 +145,7 @@ const styles = StyleSheet.create({
     marginBottom: 35,
   },
   input: {
-    height: 30,
+    height: 40,
     width: 300,
     borderColor: '#34C0FF',
     borderWidth: 2,
@@ -137,18 +153,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: 'white',
     paddingHorizontal: 15,
-    paddingVertical: 0,
     fontSize: 16,
-    textAlignVertical: 'center',
   },
   button: {
     backgroundColor: '#89EBF6',
     width: 300,
-    height: 29,
+    height: 40,
     padding: 5,
     borderRadius: 26,
     marginBottom: 15,
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
   },
   textButton: {
     textAlign: 'center',
@@ -157,10 +171,11 @@ const styles = StyleSheet.create({
   button2: {
     backgroundColor: '#D9D9D9',
     width: 300,
-    height: 29,
+    height: 40,
     padding: 5,
     borderRadius: 26,
     marginBottom: 15,
+    justifyContent: 'center',
   },
   textButton2: {
     textAlign: 'center',

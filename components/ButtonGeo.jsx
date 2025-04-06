@@ -3,12 +3,12 @@ import { View, StyleSheet } from "react-native";
 
 import { Entypo } from '@expo/vector-icons';
 
-export default function ButtonSettings({ size, focused}){
+export default function ButtonGeo({ size, focused}){
     return(
-        <View style={[styles.container, {backgroundColor: focused ? '#FFFFFF' : '#DEDEDE',  // Fundo branco quando selecionado
+        <View style={[styles.container, { backgroundColor: focused ? '#FFFFFF' : '#DEDEDE',  // Fundo branco quando selecionado
             borderWidth: focused ? 2 : 2,  // Adiciona borda para efeito visual
             borderColor: '#4682B4'} ]}>
-            <Entypo name="cog" color={ focused ? '#4682B4' : '#4169E1'} size={size} focused={focused}/>
+            <Entypo name="map" color={focused ? '#4682B4' : '#4169E1'} size={size} focused={focused}/>
         </View>
     )
 }

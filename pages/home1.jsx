@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
 
-export default function HomeScreen() {
+export default function HomeScreen({navigation}) {
   return (
     <View style={styles.container}>
         {/* <Image
@@ -17,7 +17,7 @@ export default function HomeScreen() {
       </View>
       <Text style={styles.text2}>Meus medicamentos:</Text>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("inserirTratamento")}>
         <Text style={styles.textButton}>Adicionar um tratamento</Text>
       </TouchableOpacity>
 
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   textButton: {
     fontSize: 16,
     color: "#000000",
+    fontWeight: 'bold'
   },
   text1: {
     fontSize: 20,
@@ -66,7 +67,8 @@ const styles = StyleSheet.create({
   },
   text2: {
     fontSize: 20,
-    marginBottom: 300
+    marginBottom: 300,
+    fontWeight: 'bold'
   },
   div1: {
     marginTop: 42,
