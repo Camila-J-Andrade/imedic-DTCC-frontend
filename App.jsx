@@ -2,14 +2,14 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import SplashScreen from "./pages/splash.jsx";
-import DashboardScreen from "./pages/TelaComecar.jsx";
-import Login from "./pages/login.jsx";
-import TabBar from "./pages/TabBar.jsx";
-import Cadastro from "./pages/cadastro.jsx";
-import inserirTratamento from "./pages/InserirTratamento.jsx";
+import SplashScreen from "./src/pages/splash.jsx";
+import DashboardScreen from "./src/pages/TelaComecar.jsx";
+import Login from "./src/pages/login.jsx";
+import TabBar from "./src/pages/TabBar.jsx";
+import Cadastro from "./src/pages/cadastro.jsx";
+import inserirTratamento from "./src/pages/InserirTratamento.jsx";
 
-import { TreatmentProvider } from "./components/TreatmentContext.jsx"; // Certifique-se do caminho
+import { TreatmentProvider } from "./src/components/TreatmentContext.jsx"; // Certifique-se do caminho
 
 const Stack = createStackNavigator();
 
