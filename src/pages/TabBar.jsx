@@ -3,14 +3,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Importação das telas
 import HomeScreen from './home1';
-import SettingsScreen from './configuracaoScreen';
 import AlarmScreen from './alameScreen';
 import GeoScreen from './geolocation';
+import PromoScreen from './promoTela';
 
 // Importando Botões:
 import ButtonHome from '../components/ButtonHome';
 import ButtonAlarm from '../components/ButtonAlarm';
-import ButtonSettings from '../components/ButtonSettings';
+import ButtonPromo from '../components/ButtonPromo';
 import ButtonGeo from '../components/ButtonGeo';
 
 const Tab = createBottomTabNavigator();
@@ -22,14 +22,14 @@ export default function HomeWithTabs() {
         tabBarStyle: {
           backgroundColor: '#89EBF6',
           borderTopColor: 'transparent',
-          height: 70,
+          height: 90,
           paddingBottom: 5,  // Ajustando o padding inferior
-          paddingTop: 5,     // Ajustando o padding superior
+          paddingTop: -8,     // Ajustando o padding superior
         },
       }}
     >
       <Tab.Screen
-        name="Home"
+        name='Tela Inicial'
         component={HomeScreen}
         options={{
           tabBarLabel: '',
@@ -39,7 +39,7 @@ export default function HomeWithTabs() {
         }}
       />
       <Tab.Screen
-        name="Alarm"
+        name='Alarme'
         component={AlarmScreen}
         options={{
           tabBarLabel: '',
@@ -49,7 +49,7 @@ export default function HomeWithTabs() {
         }}
       />
       <Tab.Screen
-        name="Map"
+        name='Geolocalização'
         component={GeoScreen}
         options={{
           tabBarLabel: '',
@@ -59,12 +59,12 @@ export default function HomeWithTabs() {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name='Promoções'
+        component={PromoScreen}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ focused, size }) => (
-            <ButtonSettings size={size} focused={focused} />
+            <ButtonPromo size={size} focused={focused} />
           ),
         }}
       />

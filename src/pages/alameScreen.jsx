@@ -1,5 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity, Image, TextInput, Alert } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	SafeAreaView,
+	ScrollView,
+	TouchableOpacity,
+	Image,
+	TextInput,
+	Alert,
+	Platform,
+	ImageBackground,
+} from "react-native";
 import * as Calendar from "expo-calendar";
 import * as Notifications from "expo-notifications";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -23,7 +35,8 @@ export default function AlarmScreen() {
 
 	useEffect(() => {
 		(async () => {
-			const { status: calendarStatus } = await Calendar.requestCalendarPermissionsAsync();
+			const { status: calendarStatus } =
+				await Calendar.requestCalendarPermissionsAsync();
 			const { status: notifStatus } = await Notifications.requestPermissionsAsync();
 
 			if (calendarStatus === "granted") {
@@ -39,20 +52,24 @@ export default function AlarmScreen() {
 			}
 		})();
 
-		const subscription = Notifications.addNotificationReceivedListener(async (notification) => {
-			const notifId = notification.request.identifier;
-			const eventId = alarmMap.current[notifId];
+		const subscription = Notifications.addNotificationReceivedListener(
+			async (notification) => {
+				const notifId = notification.request.identifier;
+				const eventId = alarmMap.current[notifId];
 
-			if (eventId) {
-				try {
-					await Calendar.deleteEventAsync(eventId);
-					console.log("⛔ Evento excluído após notificação:", eventId);
-					setAlarms((prevAlarms) => prevAlarms.filter((alarm) => alarm.id !== eventId));
-				} catch (error) {
-					console.error("Erro ao excluir evento:", error);
+				if (eventId) {
+					try {
+						await Calendar.deleteEventAsync(eventId);
+						console.log("⛔ Evento excluído após notificação:", eventId);
+						setAlarms((prevAlarms) =>
+							prevAlarms.filter((alarm) => alarm.id !== eventId)
+						);
+					} catch (error) {
+						console.error("Erro ao excluir evento:", error);
+					}
 				}
 			}
-		});
+		);
 
 		return () => {
 			subscription.remove();
@@ -119,11 +136,10 @@ export default function AlarmScreen() {
 			await scheduleNotification(alarmDate, event.id);
 			await loadAlarms();
 
-			// Agora salva no banco
-			await fetch('http://35.199.71.92:3333/alarmes', {
-				method: 'POST',
+			await fetch("http://35.247.225.42:3333/alarmes", {
+				method: "POST",
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
 					titulo: alarmTitle,
@@ -131,17 +147,16 @@ export default function AlarmScreen() {
 					data_hora: alarmDate.toISOString(),
 				}),
 			})
-				.then(response => {
+				.then((response) => {
 					if (!response.ok) {
-						throw new Error('Erro ao salvar alarme no servidor.');
+						throw new Error("Erro ao salvar alarme no servidor.");
 					}
 					console.log("✅ Alarme salvo no banco também!");
 				})
-				.catch(error => {
-					console.error('Erro ao salvar alarme no banco:', error);
+				.catch((error) => {
+					console.error("Erro ao salvar alarme no banco:", error);
 				});
 
-			// Limpa campos
 			setAlarmTitle("");
 			setAlarmDescription("");
 
@@ -175,21 +190,26 @@ export default function AlarmScreen() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
-				{/* Header */}
-				<View style={styles.row}>
-					<Image
-						source={require("../assets/icon de relogio.png")}
-						resizeMode="stretch"
-						style={styles.image}
-					/>
-					<View style={styles.box} />
-					<Text style={styles.text}>{"Meus alarmes:"}</Text>
-				</View>
+				{/* Header com background e ícone alinhado */}
+				<ImageBackground
+					source={require("../assets/Rectangle 1.png")}
+					style={styles.headerBackground}
+					resizeMode="cover"
+				>
+					<View style={styles.headerContent}>
+						<Image
+							source={require("../assets/icon de relogio.png")}
+							style={styles.iconClock}
+							resizeMode="contain"
+						/>
+						<Text style={styles.headerText}>Meus alarmes:</Text>
+					</View>
+				</ImageBackground>
 
 				{/* Botão de Adicionar Alarme */}
 				<View style={styles.view2}>
 					<TouchableOpacity style={styles.button} onPress={() => setDatePickerVisibility(true)}>
-						<Text style={styles.text2}>Adicionar alarme</Text>
+						<Text style={styles.text2}>Adicionar hora e data</Text>
 					</TouchableOpacity>
 				</View>
 
@@ -229,9 +249,7 @@ export default function AlarmScreen() {
 
 				{/* Listagem de Alarmes */}
 				<View style={{ marginTop: 40, paddingHorizontal: 20 }}>
-					<Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>
-						🔔 Alarmes Criados:
-					</Text>
+					<Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>🔔 Alarmes Criados:</Text>
 
 					{alarms.length === 0 ? (
 						<Text style={{ color: "#666" }}>Nenhum alarme encontrado.</Text>
@@ -239,13 +257,14 @@ export default function AlarmScreen() {
 						alarms
 							.sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
 							.map((event) => (
-								<View
-									key={event.id}
-									style={styles.card}
-								>
+								<View key={event.id} style={styles.card}>
 									<Text style={{ fontWeight: "bold", color: "#fff" }}>{event.title}</Text>
-									<Text style={{ color: "#fff" }}>🗓️ Início: {new Date(event.startDate).toLocaleString()}</Text>
-									<Text style={{ color: "#fff" }}>🛑 Fim: {new Date(event.endDate).toLocaleString()}</Text>
+									<Text style={{ color: "#fff" }}>
+										🗓️ Início: {new Date(event.startDate).toLocaleString()}
+									</Text>
+									<Text style={{ color: "#fff" }}>
+										🛑 Fim: {new Date(event.endDate).toLocaleString()}
+									</Text>
 									{event.notes && <Text style={{ color: "#fff" }}>📝 {event.notes}</Text>}
 								</View>
 							))
@@ -261,8 +280,28 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#FFF6EE",
 	},
-	box: {
-		flex: 1,
+	headerBackground: {
+		width: 400,
+		height: 150,
+		justifyContent: "center",
+		alignItems: "center",
+		marginBottom: 25,
+		borderRadius: 5,
+		overflow: "hidden",
+	},
+	headerContent: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	iconClock: {
+		width: 70,
+		height: 70,
+		marginRight: 10,
+	},
+	headerText: {
+		color: "#000000",
+		fontSize: 24,
+		fontWeight: "bold",
 	},
 	button: {
 		alignItems: "center",
@@ -280,23 +319,6 @@ const styles = StyleSheet.create({
 		elevation: 4,
 		marginTop: 20,
 	},
-	image: {
-		width: 70,
-		height: 70,
-	},
-	row: {
-		flexDirection: "row",
-		alignItems: "center",
-		marginHorizontal: 36,
-		marginTop: 10,
-	},
-	text: {
-		color: "#000000",
-		fontSize: 20,
-		fontWeight: "bold",
-		marginVertical: 28,
-		marginRight: 42,
-	},
 	text2: {
 		color: "#000000",
 		fontSize: 16,
@@ -307,25 +329,18 @@ const styles = StyleSheet.create({
 		marginBottom: 20,
 	},
 	input: {
+		borderColor: "#CCCCCC",
 		borderWidth: 1,
-		borderColor: "#ccc",
 		borderRadius: 8,
 		padding: 10,
-		marginBottom: 10,
-		backgroundColor: "#fff",
+		marginVertical: 10,
+		backgroundColor: "#FFF",
+		fontSize: 16,
 	},
 	card: {
-		marginBottom: 15,
-		padding: 10,
 		backgroundColor: "#1C6789",
-		borderRadius: 20,
-		shadowColor: "#000",
-		shadowOpacity: 0.3,
-		shadowOffset: {
-			width: 0,
-			height: 4,
-		},
-		shadowRadius: 4,
-		elevation: 5,
+		padding: 15,
+		borderRadius: 8,
+		marginBottom: 15,
 	},
 });

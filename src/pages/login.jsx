@@ -11,7 +11,7 @@ export default function Login({ navigation }) {
     setLoading(true);
     setError('');
 
-    fetch("http://35.199.71.92:3333/login/", {         //Não esquecer de sempre atualizar os IP
+    fetch("http://35.247.225.42:3333/login/", {         //Não esquecer de sempre atualizar os IP
       method: "POST",
       headers: {
         Accept: "application/json", // Corrigido
@@ -67,7 +67,7 @@ export default function Login({ navigation }) {
       {error ? <Text style={{ color: 'red' }}>{String(error)}</Text> : null}
 
       <View style={styles.ButtonsDiv}>
-        <TouchableOpacity style={styles.botao} onPress={handlelogin/* => navigation.navigate("TabBar")*/}>
+        <TouchableOpacity style={styles.botao} onPress={handlelogin/*() => navigation.navigate("TabBar")*/}>
           <Text style={styles.textBotao}>
             {loading ? 'Carregando...' : 'Login'}
           </Text>

@@ -69,7 +69,7 @@ const Mapa = () => {
             {loading ? (
                 <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color="#007AFF" />
-                    <Text>Carregando farmácias...</Text> {/* Agora o Text é reconhecido */}
+                    <Text>Carregando farmácias...</Text> 
                 </View>
             ) : userLocation ? (
                 <MapView
