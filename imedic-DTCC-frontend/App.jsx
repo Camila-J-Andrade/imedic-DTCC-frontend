@@ -9,6 +9,9 @@ import TabBar from "./src/pages/TabBar.jsx";
 import Cadastro from "./src/pages/cadastro.jsx";
 import inserirTratamento from "./src/pages/InserirTratamento.jsx";
 import QRCode from "./src/pages/QRCode.jsx";
+import PromoTela from "./src/pages/promoTela.jsx";
+import PerfilScreen from "./src/pages/telaPerfil.jsx";
+import Setting from "./src/pages/configuracaoScreen.jsx";
 
 import { TreatmentProvider } from "./src/components/TreatmentContext.jsx"; // Certifique-se do caminho
 
@@ -26,6 +29,9 @@ export default function App() {
           <Stack.Screen name="TabBar" component={TabBar} />
           <Stack.Screen name="inserirTratamento" component={inserirTratamento} />
           <Stack.Screen name="QRCode" component={QRCode} />
+          <Stack.Screen name="PromoTela" component={PromoTela} />
+          <Stack.Screen name="PerfilScreen" component={PerfilScreen} />
+          <Stack.Screen name="Setting" component={Setting} />
         </Stack.Navigator>
       </NavigationContainer>
     </TreatmentProvider>

@@ -46,7 +46,7 @@ export default function Cadastro({ navigation }) {
 
     setLoading(true);
 
-    fetch("http://35.247.252.179:3333/user/", {         //Não esquecer de sempre atualizar os IP
+    fetch("http://35.247.225.42:3333/user/", {         //Não esquecer de sempre atualizar os IP
       method: "POST",
       headers: {
         Accept: "application/json",

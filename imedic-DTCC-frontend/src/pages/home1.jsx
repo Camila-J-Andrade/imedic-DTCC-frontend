@@ -1,4 +1,14 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  ImageBackground,
+  BackHandler,
+  Alert
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { format } from 'date-fns';
@@ -8,7 +18,7 @@ export default function HomeScreen({ navigation }) {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [loading, setLoading] = useState(true);
 
-  // Atualiza o relógio a cada segundo
+  // Atualização do horário em tempo real
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentDateTime(new Date());
@@ -17,22 +27,38 @@ export default function HomeScreen({ navigation }) {
     return () => clearInterval(interval);
   }, []);
 
-  // Busca os tratamentos ao focar a tela
+  // Bloqueio do botão físico de voltar (não permite voltar para login)
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert('Sair do app', 'Deseja sair do aplicativo?', [
+          { text: 'Cancelar', style: 'cancel' },
+          { text: 'Sair', onPress: () => BackHandler.exitApp() },
+        ]);
+        return true; // Impede voltar
+      };
+
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress
+      );
+
+      return () => backHandler.remove();
+    }, [])
+  );
+
+  // Busca os tratamentos da API
   useFocusEffect(
     React.useCallback(() => {
       const fetchTratamentos = async () => {
         setLoading(true);
         try {
-          const response = await fetch("http://35.247.252.179:3333/tratamento");
+          const response = await fetch("http://35.247.225.42:3333/tratamento");
           const data = await response.json();
 
-          console.log("Resposta da API de tratamento:", data);
-
-          // A resposta da API está em data.message, então precisamos acessar esse array
           if (Array.isArray(data.message)) {
-            setTratamentos(data.message); // Atualiza o estado com o array de tratamentos
+            setTratamentos(data.message);
           } else {
-            console.warn("A resposta não é um array:", data);
             setTratamentos([]);
           }
         } catch (error) {
@@ -49,19 +75,31 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.div1}>
-        <Image
-          source={require('../assets/PerfilLogo.png')}
-          style={styles.image}
-        />
-        <Text style={styles.text1}>Seja Bem-Vindo</Text>
-      </View>
+      {/* Cabeçalho */}
+      <ImageBackground
+        source={require('../assets/Rectangle 1.png')}
+        style={styles.headerBackground}
+        resizeMode="cover"
+      >
+        <View style={styles.headerContent}>
+          <TouchableOpacity onPress={() => navigation.navigate("PerfilScreen")}>
+            <Image
+              source={require('../assets/PerfilLogo.png')}
+              style={styles.headerImage}
+            />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>Seja Bem-Vindo</Text>
+        </View>
+      </ImageBackground>
 
-      <Text style={styles.dateTime}>{currentDateTime.toLocaleString()}</Text>
+      {/* Data e hora */}
+      <Text style={styles.dateTime}>
+        {currentDateTime.toLocaleString()}
+      </Text>
 
       <Text style={styles.text2}>Meus medicamentos:</Text>
 
-      {/* Tratamentos */}
+      {/* Lista de tratamentos */}
       {loading ? (
         <Text style={styles.loadingText}>Carregando tratamentos...</Text>
       ) : tratamentos.length === 0 ? (
@@ -73,32 +111,38 @@ export default function HomeScreen({ navigation }) {
               Medicamento: {item.nome_remedio || 'Desconhecido'}
             </Text>
             <Text>Tarja: {item.nome_tarja || 'Sem Tarja'}</Text>
-            <Text>Dosagem: {item.dosagem ? `${item.dosagem}mg` : 'Sem dosagem'}</Text>
-            <Text>📅 Início: {item.data_inicio ? format(new Date(item.data_inicio), 'dd/MM/yyyy') : 'Data desconhecida'}</Text>
-            <Text>🛑 Fim: {item.data_fim ? format(new Date(item.data_fim), 'dd/MM/yyyy') : 'Data desconhecida'}</Text>
+            <Text>
+              Dosagem: {item.dosagem ? `${item.dosagem}mg` : 'Sem dosagem'}
+            </Text>
+            <Text>
+              📅 Início: {item.data_inicio ? format(new Date(item.data_inicio), 'dd/MM/yyyy') : 'Data desconhecida'}
+            </Text>
+            <Text>
+              🛑 Fim: {item.data_fim ? format(new Date(item.data_fim), 'dd/MM/yyyy') : 'Data desconhecida'}
+            </Text>
           </View>
         ))
       )}
 
+      {/* Botões */}
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("inserirTratamento")}
-        accessible={true}
-        accessibilityLabel="Botão para adicionar um novo tratamento"
       >
-        <Text style={styles.textButton}>Adiconar Tratamento</Text>
+        <Text style={styles.textButton}>Adicionar Tratamento</Text>
       </TouchableOpacity>
-            <TouchableOpacity
+
+      <TouchableOpacity
         style={styles.button2}
         onPress={() => navigation.navigate("QRCode")}
-        accessible={true}
-        accessibilityLabel="Botão para acionar camera para QRCode"
       >
         <Text style={styles.textButton}>Escanear QR Code da Bula</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -107,20 +151,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexGrow: 1,
   },
-  div1: {
-    marginTop: 42,
+  headerBackground: {
+    width: 400,
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 25,
+    borderRadius: 15,
+    marginTop: -15,
+    overflow: 'hidden',
+  },
+  headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    padding: 10,
+    borderRadius: 15,
   },
-  image: {
-    width: 100,
-    height: 100,
+  headerImage: {
+    width: 90,
+    height: 90,
     marginRight: 10,
   },
-  text1: {
-    fontSize: 20,
+  headerText: {
+    fontSize: 24,
     fontWeight: 'bold',
+    color: '#000',
   },
   text2: {
     fontSize: 20,
@@ -168,7 +223,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 30,
   },
-    button2: {
+  button2: {
     width: 234,
     height: 35,
     alignItems: 'center',
