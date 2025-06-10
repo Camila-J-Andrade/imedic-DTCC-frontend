@@ -12,6 +12,7 @@ import QRCode from "./src/pages/QRCode.jsx";
 import PromoTela from "./src/pages/promoTela.jsx";
 import PerfilScreen from "./src/pages/telaPerfil.jsx";
 import Setting from "./src/pages/configuracaoScreen.jsx";
+import AtualizarTratamento from "./src/pages/AtualizarTratamento.jsx";
 
 import { TreatmentProvider } from "./src/components/TreatmentContext.jsx"; // Certifique-se do caminho
 
@@ -32,6 +33,7 @@ export default function App() {
           <Stack.Screen name="PromoTela" component={PromoTela} />
           <Stack.Screen name="PerfilScreen" component={PerfilScreen} />
           <Stack.Screen name="Setting" component={Setting} />
+          <Stack.Screen name="AtualizarTratamento" component={AtualizarTratamento} />
         </Stack.Navigator>
       </NavigationContainer>
     </TreatmentProvider>
