@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "imedic-frontend",
+    "name": "I-Medic",
     "slug": "imedic-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,13 +13,20 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Precisamos da sua localização para mostrar farmácias próximas."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/imediclogo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import {
-    StyleSheet, View, Text, Alert, TouchableOpacity, TextInput, Linking, Image
-} from 'react-native';
+import { StyleSheet, View, Text, Alert, TouchableOpacity, TextInput, Linking, Image } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 

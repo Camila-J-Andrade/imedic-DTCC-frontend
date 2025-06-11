@@ -11,10 +11,12 @@ import {
 	Alert,
 	Platform,
 	ImageBackground,
+	Animated,
 } from "react-native";
 import * as Calendar from "expo-calendar";
 import * as Notifications from "expo-notifications";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { Feather } from "@expo/vector-icons";
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -32,11 +34,11 @@ export default function AlarmScreen() {
 	const [alarmTitle, setAlarmTitle] = useState("");
 	const [alarmDescription, setAlarmDescription] = useState("");
 	const alarmMap = useRef({});
+	const [selectedCard, setSelectedCard] = useState(null);
 
 	useEffect(() => {
 		(async () => {
-			const { status: calendarStatus } =
-				await Calendar.requestCalendarPermissionsAsync();
+			const { status: calendarStatus } = await Calendar.requestCalendarPermissionsAsync();
 			const { status: notifStatus } = await Notifications.requestPermissionsAsync();
 
 			if (calendarStatus === "granted") {
@@ -52,24 +54,14 @@ export default function AlarmScreen() {
 			}
 		})();
 
-		const subscription = Notifications.addNotificationReceivedListener(
-			async (notification) => {
-				const notifId = notification.request.identifier;
-				const eventId = alarmMap.current[notifId];
+		const subscription = Notifications.addNotificationReceivedListener(async (notification) => {
+			const notifId = notification.request.identifier;
+			const eventId = alarmMap.current[notifId];
 
-				if (eventId) {
-					try {
-						await Calendar.deleteEventAsync(eventId);
-						console.log("⛔ Evento excluído após notificação:", eventId);
-						setAlarms((prevAlarms) =>
-							prevAlarms.filter((alarm) => alarm.id !== eventId)
-						);
-					} catch (error) {
-						console.error("Erro ao excluir evento:", error);
-					}
-				}
+			if (eventId) {
+				await deleteAlarm(eventId);
 			}
-		);
+		});
 
 		return () => {
 			subscription.remove();
@@ -99,8 +91,7 @@ export default function AlarmScreen() {
 	};
 
 	const scheduleNotification = async (date, eventId) => {
-		const now = new Date();
-		if (date <= now) {
+		if (date <= new Date()) {
 			Alert.alert("Erro", "Escolha uma data futura para o alarme.");
 			return;
 		}
@@ -136,27 +127,6 @@ export default function AlarmScreen() {
 			await scheduleNotification(alarmDate, event.id);
 			await loadAlarms();
 
-			await fetch("http://35.247.225.42:3333/alarmes", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					titulo: alarmTitle,
-					descricao: alarmDescription,
-					data_hora: alarmDate.toISOString(),
-				}),
-			})
-				.then((response) => {
-					if (!response.ok) {
-						throw new Error("Erro ao salvar alarme no servidor.");
-					}
-					console.log("✅ Alarme salvo no banco também!");
-				})
-				.catch((error) => {
-					console.error("Erro ao salvar alarme no banco:", error);
-				});
-
 			setAlarmTitle("");
 			setAlarmDescription("");
 
@@ -166,19 +136,25 @@ export default function AlarmScreen() {
 		}
 	};
 
+	const deleteAlarm = async (eventId) => {
+		try {
+			await Calendar.deleteEventAsync(eventId);
+			setAlarms((prev) => prev.filter((alarm) => alarm.id !== eventId));
+			console.log("⛔ Evento excluído:", eventId);
+		} catch (error) {
+			console.error("Erro ao excluir evento:", error);
+		}
+	};
+
 	const loadAlarms = async () => {
 		try {
 			const calendarId = await getOrCreateCalendar();
-
 			const now = new Date();
-			const future = new Date();
-			future.setFullYear(now.getFullYear() + 1);
-
+			const future = new Date(now.getFullYear() + 1, now.getMonth());
 			const events = await Calendar.getEventsAsync([calendarId], now, future);
 			setAlarms(events);
 		} catch (error) {
 			console.error("Erro ao carregar alarmes:", error);
-			Alert.alert("Erro", "Não foi possível carregar os alarmes.");
 		}
 	};
 
@@ -190,30 +166,19 @@ export default function AlarmScreen() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
-				{/* Header com background e ícone alinhado */}
-				<ImageBackground
-					source={require("../assets/Rectangle 1.png")}
-					style={styles.headerBackground}
-					resizeMode="cover"
-				>
+				<ImageBackground source={require("../assets/Rectangle 1.png")} style={styles.headerBackground}>
 					<View style={styles.headerContent}>
-						<Image
-							source={require("../assets/icon de relogio.png")}
-							style={styles.iconClock}
-							resizeMode="contain"
-						/>
+						<Image source={require("../assets/icon de relogio.png")} style={styles.iconClock} />
 						<Text style={styles.headerText}>Meus alarmes:</Text>
 					</View>
 				</ImageBackground>
 
-				{/* Botão de Adicionar Alarme */}
 				<View style={styles.view2}>
 					<TouchableOpacity style={styles.button} onPress={() => setDatePickerVisibility(true)}>
 						<Text style={styles.text2}>Adicionar hora e data</Text>
 					</TouchableOpacity>
 				</View>
 
-				{/* Inputs */}
 				<View style={{ paddingHorizontal: 20 }}>
 					<TextInput
 						placeholder="Título do Alarme"
@@ -221,7 +186,6 @@ export default function AlarmScreen() {
 						onChangeText={setAlarmTitle}
 						style={styles.input}
 					/>
-
 					<TextInput
 						placeholder="Descrição do Alarme"
 						value={alarmDescription}
@@ -239,7 +203,6 @@ export default function AlarmScreen() {
 						onCancel={() => setDatePickerVisibility(false)}
 					/>
 
-					{/* Botão Criar Alarme */}
 					<View style={styles.view2}>
 						<TouchableOpacity style={styles.button} onPress={createAlarmEvent} disabled={!hasPermission}>
 							<Text style={styles.text2}>Criar Alarme</Text>
@@ -247,7 +210,6 @@ export default function AlarmScreen() {
 					</View>
 				</View>
 
-				{/* Listagem de Alarmes */}
 				<View style={{ marginTop: 40, paddingHorizontal: 20 }}>
 					<Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>🔔 Alarmes Criados:</Text>
 
@@ -257,16 +219,29 @@ export default function AlarmScreen() {
 						alarms
 							.sort((a, b) => new Date(a.startDate) - new Date(b.startDate))
 							.map((event) => (
-								<View key={event.id} style={styles.card}>
-									<Text style={{ fontWeight: "bold", color: "#fff" }}>{event.title}</Text>
-									<Text style={{ color: "#fff" }}>
-										🗓️ Início: {new Date(event.startDate).toLocaleString()}
-									</Text>
-									<Text style={{ color: "#fff" }}>
-										🛑 Fim: {new Date(event.endDate).toLocaleString()}
-									</Text>
-									{event.notes && <Text style={{ color: "#fff" }}>📝 {event.notes}</Text>}
-								</View>
+								<TouchableOpacity
+									key={event.id}
+									onPress={() => setSelectedCard(selectedCard === event.id ? null : event.id)}
+								>
+									<View style={styles.card}>
+										<Text style={{ fontWeight: "bold", color: "#fff" }}>{event.title}</Text>
+										<Text style={{ color: "#fff" }}>
+											🗓️ Início: {new Date(event.startDate).toLocaleString()}
+										</Text>
+										<Text style={{ color: "#fff" }}>
+											🛑 Fim: {new Date(event.endDate).toLocaleString()}
+										</Text>
+										{event.notes && <Text style={{ color: "#fff" }}>📝 {event.notes}</Text>}
+
+										{selectedCard === event.id && (
+											<Animated.View style={{ marginTop: 10, alignItems: "flex-end" }}>
+												<TouchableOpacity onPress={() => deleteAlarm(event.id)}>
+													<Feather name="trash-2" size={24} color="white" />
+												</TouchableOpacity>
+											</Animated.View>
+										)}
+									</View>
+								</TouchableOpacity>
 							))
 					)}
 				</View>
@@ -281,7 +256,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#FFF6EE",
 	},
 	headerBackground: {
-		width: 400,
+		width: "100%",
 		height: 150,
 		justifyContent: "center",
 		alignItems: "center",

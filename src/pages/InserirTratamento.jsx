@@ -51,7 +51,7 @@ export default function InserirTratamento({ navigation }) {
 
     const fetchTarjas = async () => {
         try {
-            const response = await fetch("http://35.247.225.42:3333/tarja");
+            const response = await fetch("http://35.247.196.19:3333/tarja");
             const data = await response.json();
             setListaTarjas(data);
         } catch (error) {
@@ -122,7 +122,7 @@ export default function InserirTratamento({ navigation }) {
 
     const cadastrarTratamento = async () => {
         try {
-            const response = await fetch("http://35.247.225.42:3333/tratamento", {
+            const response = await fetch("http://35.247.196.19:3333/tratamento", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
