@@ -1,9 +1,14 @@
 import React from "react";
-import { View, StyleSheet, Image, Text } from 'react-native';
+import { View, StyleSheet, Image, Text, ImageBackground } from 'react-native';
 
 export default function SettingsScreen() {
   return (
     <View style={styles.container}>
+      <ImageBackground
+        source={require("../assets/Rectangle 1.png")}
+        style={styles.headerBackground}
+        resizeMode="cover"
+      ></ImageBackground>
       <View style={styles.div1}>
         <Image
           style={styles.logo}
@@ -11,6 +16,8 @@ export default function SettingsScreen() {
         />
         <Text style={styles.text1}>Minhas definições</Text>
       </View>
+
+      <View style={styles.view2}>
 
       <View style={styles.view}>
         <Text style={styles.text2}>Dados Pessoais</Text>
@@ -29,6 +36,7 @@ export default function SettingsScreen() {
       </View>
       <View style={styles.view}>
         <Text style={styles.text2}>Privacidade</Text>
+      </View>
       </View>
 
       <View style={styles.buttonsDiv} />
@@ -54,10 +62,12 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     marginRight: 10, // Espaçamento entre imagem e texto
+    marginTop: -90
   },
   text1: {
     fontSize: 20,
     fontWeight: 'bold',
+    marginTop: -80
   },
   view: {
     width: '100%',
@@ -65,7 +75,23 @@ const styles = StyleSheet.create({
     marginVertical: 10, // Adiciona espaçamento entre os textos
     fontSize: 16,
   },
+  view2: {
+    width: '100%',
+    alignItems: 'center', // Centraliza os textos
+    marginVertical: 10, // Adiciona espaçamento entre os textos
+    marginTop: 50
+  },
   text2: {
     fontSize: 16,
+  },
+  headerBackground: {
+    width: 400,
+    height: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 25,
+    borderRadius: 15,
+    marginTop: -420,
+    overflow: 'hidden',
   },
 });

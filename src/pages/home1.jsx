@@ -1,17 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ImageBackground,
-  BackHandler,
-  Alert,
-  Animated,
-  ScrollView,
-  ToastAndroid,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, BackHandler, Alert, Animated, ScrollView, ToastAndroid, ActivityIndicator,} from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { format } from "date-fns";
@@ -59,7 +46,7 @@ export default function HomeScreen({ navigation }) {
   const fetchTratamentos = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://35.247.196.19:3333/tratamento");
+      const response = await fetch("http://34.151.199.145:3333/tratamento");
       const data = await response.json();
 
       const lista = Array.isArray(data.message) ? data.message : [];
@@ -115,7 +102,7 @@ export default function HomeScreen({ navigation }) {
   const deleteTratamento = async (id) => {
     setDeletingId(id);
     try {
-      const response = await fetch(`http://35.247.196.19:3333/tratamento/${id}`, {
+      const response = await fetch(`http://34.151.199.145:3333/tratamento/${id}`, {
         method: "DELETE",
       });
 
