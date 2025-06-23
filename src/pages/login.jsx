@@ -11,7 +11,7 @@ export default function Login({ navigation }) {
     setLoading(true);
     setError('');
 
-    fetch("http://34.151.199.145:3333/login/", {         //Não esquecer de sempre atualizar os IP
+    fetch("http://35.199.85.189:3333/login/", {         //Não esquecer de sempre atualizar os IP
       method: "POST",
       headers: {
         Accept: "application/json", // Corrigido

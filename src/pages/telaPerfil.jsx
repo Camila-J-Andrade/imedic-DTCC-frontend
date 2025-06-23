@@ -1,10 +1,32 @@
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { ProfileContext } from '../components/ProfileContext';
 
-export default function Perfil({ navigation, route }) {
+export default function Perfil({ navigation }) {
+    const { profileImage, setProfileImage } = useContext(ProfileContext);
+
+    const pickImage = async () => {
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== 'granted') {
+            alert('Precisamos de permissão para acessar suas fotos!');
+            return;
+        }
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setProfileImage(result.assets[0].uri);
+        }
+    };
 
     return (
         <View style={styles.container}>
-
             {/* Header */}
             <View style={styles.header}>
                 <Image
@@ -17,35 +39,26 @@ export default function Perfil({ navigation, route }) {
             <View style={styles.div1}>
                 <Image
                     style={styles.logo}
-                    source={require('../assets/PerfilLogo.png')}
+                    source={profileImage ? { uri: profileImage } : require('../assets/PerfilLogo.png')}
                 />
             </View>
 
             {/* Nome do usuário exibido */}
             <Text style={styles.text2}>Usuario</Text>
 
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={pickImage}>
                 <Text style={styles.textButton}>Alterar foto de perfil</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-                style={styles.button}
-                onPress={() => navigation.navigate('TabBar')}
-            >
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('TabBar')}>
                 <Text style={styles.textButton}>Voltar</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity                 
-                style={styles.button}
-                onPress={() => navigation.navigate('Setting')}
-            >
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Setting')}>
                 <Text style={styles.textButton}>Configurações</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity
-                style={styles.button1}
-                onPress={() => navigation.navigate('Login')}
-            >
+            <TouchableOpacity style={styles.button1} onPress={() => navigation.navigate('Login')}>
                 <Text style={styles.textButton}>Sair da minha conta</Text>
             </TouchableOpacity>
 
@@ -83,6 +96,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         marginTop: 10,
+        borderRadius: 100, // Deixa a imagem redonda
     },
     button: {
         width: 234,
@@ -132,10 +146,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignContent: 'center',
     },
-    div2: {
-        alignItems: 'center',
-        margin: 20,
-    },
     footer: {
         position: 'absolute',
         bottom: 20,
@@ -152,3 +162,4 @@ const styles = StyleSheet.create({
         marginVertical: 4,
     },
 });
+

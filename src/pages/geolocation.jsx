@@ -119,14 +119,14 @@ const styles = StyleSheet.create({
     loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
     button: {
         position: "absolute",
-        bottom: 20,
-        left: "50%",
+        bottom: 635,
+        left: "21%",
         transform: [{ translateX: -75 }],
         backgroundColor: "#89EBF6",
         paddingVertical: 10,
         paddingHorizontal: 20,
-        borderRadius: 20,
-        elevation: 5,
+        borderRadius: 30,
+        elevation: 10,
     },
     buttonText: {
         color: "#000",

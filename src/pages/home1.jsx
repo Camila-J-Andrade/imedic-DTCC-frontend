@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, BackHandler, Alert, Animated, ScrollView, ToastAndroid, ActivityIndicator,} from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
+import { ProfileContext } from '../components/ProfileContext';
 import { useFocusEffect } from "@react-navigation/native";
 import { format } from "date-fns";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -10,6 +11,7 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [expandedCard, setExpandedCard] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const { profileImage } = useContext(ProfileContext);
 
   const animatedHeight = useRef({}).current;
 
@@ -46,7 +48,7 @@ export default function HomeScreen({ navigation }) {
   const fetchTratamentos = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://34.151.199.145:3333/tratamento");
+      const response = await fetch("http://35.199.85.189:3333/tratamento");
       const data = await response.json();
 
       const lista = Array.isArray(data.message) ? data.message : [];
@@ -102,7 +104,7 @@ export default function HomeScreen({ navigation }) {
   const deleteTratamento = async (id) => {
     setDeletingId(id);
     try {
-      const response = await fetch(`http://34.151.199.145:3333/tratamento/${id}`, {
+      const response = await fetch(`http://35.199.85.189:3333/tratamento/${id}`, {
         method: "DELETE",
       });
 
@@ -143,9 +145,9 @@ export default function HomeScreen({ navigation }) {
         <View style={styles.headerContent}>
           <TouchableOpacity onPress={() => navigation.navigate("PerfilScreen")}>
             <Image
-              style={styles.headerImage}
-              source={require("../assets/PerfilLogo.png")}
-            />
+                style={styles.headerImage}
+                source={profileImage ? { uri: profileImage } : require("../assets/PerfilLogo.png")}
+            />            
           </TouchableOpacity>
           <Text style={styles.headerText}>Seja Bem-Vindo</Text>
         </View>
@@ -267,6 +269,9 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     marginRight: 10,
+    borderRadius: 45,
+    borderWidth: 2, 
+    borderColor: '#fff', 
   },
   headerText: {
     fontSize: 24,
