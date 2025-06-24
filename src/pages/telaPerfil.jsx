@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         marginTop: 10,
-        borderRadius: 100, // Deixa a imagem redonda
+        borderRadius: 100,
     },
     button: {
         width: 234,

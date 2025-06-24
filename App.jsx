@@ -15,13 +15,11 @@ import Setting from "./src/pages/configuracaoScreen.jsx";
 import AtualizarTratamento from "./src/pages/AtualizarTratamento.jsx";
 
 import { TreatmentProvider } from "./src/components/TreatmentContext.jsx"; // Certifique-se do caminho
-import { ProfileProvider } from "./src/components/ProfileContext.jsx";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <ProfileProvider>
     <TreatmentProvider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -39,6 +37,5 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </TreatmentProvider>
-    </ProfileProvider>
   );
 }

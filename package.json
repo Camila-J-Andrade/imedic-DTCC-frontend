@@ -47,8 +47,10 @@
     "react-native-svg": "15.11.2",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "^0.20.0",
-    "yet": "^0.1.0",
-    "expo-image-picker": "~16.1.4"
+    "yet": "^0.1.0"
+  },
+  "overrides": {
+    "date-and-time": "^0.14.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

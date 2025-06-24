@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, Platform, Modal, Image, Pressable } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, Platform, Modal, Image, Pressable, ImageBackground } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Calendar from "expo-calendar";
 import * as Notifications from "expo-notifications";
@@ -159,10 +159,16 @@ export default function InserirTratamento({ navigation }) {
 
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.titleContainer}>
-                <Image source={require('../assets/pilula.png')} style={styles.image} />
-                <Text style={styles.title}>Inserir Tratamento</Text>
-            </View>
+            <ImageBackground
+                source={require("../assets/Rectangle 1.png")}
+                style={styles.headerBackground}
+                resizeMode="cover"
+            >
+                <View style={styles.titleOverlay}>
+                    <Image source={require("../assets/pilula.png")} style={styles.image} />
+                    <Text style={styles.title}>Inserir Tratamento</Text>
+                </View>
+            </ImageBackground>
 
             <TextInput
                 placeholder="Nome do remédio"
@@ -311,12 +317,23 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#FFF6EE",
-        padding: 20,
+        padding: 7,
     },
-    titleContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 20,
+    headerBackground: {
+        width: 390,
+        height: 170,
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 35,
+        borderRadius: 15,
+        marginTop: -30,
+        overflow: "hidden",
+        padding: 1,
+    },
+    titleOverlay: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
     },
     image: {
         width: 60,
@@ -326,7 +343,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: "bold",
-        textAlign: "center",
+        color: "#000", // se necessário, para contraste
     },
     input: {
         borderWidth: 1,

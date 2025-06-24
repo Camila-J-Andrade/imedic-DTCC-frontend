@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    StyleSheet,
-    ScrollView,
-    Alert,
-    Modal,
-    Image
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, Modal, Image, Pressable, ImageBackground } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import * as Calendar from "expo-calendar";
@@ -74,17 +64,16 @@ const AtualizarTratamento = ({ route, navigation }) => {
 
     const getTarjaColors = (nomeTarja) => {
         switch (nomeTarja.toLowerCase()) {
-            case "vermelha":
+            case "Vermelha":
                 return { backgroundColor: "#FF0000", color: "#FFFFFF" };
-            case "amarela":
+            case "Amarela":
                 return { backgroundColor: "#FFFF00", color: "#000000" };
-            case "preta":
+            case "Preta":
                 return { backgroundColor: "#000000", color: "#FFFFFF" };
             default:
                 return { backgroundColor: "#CCCCCC", color: "#000000" };
         }
     };
-
     const getDefaultCalendarSource = async () => {
         const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
         const defaultCalendar = calendars.find(cal => cal.source?.name === "Default");
@@ -199,8 +188,16 @@ const AtualizarTratamento = ({ route, navigation }) => {
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Image source={require('../assets/pilula.png')} style={styles.image} />
-                <Text style={styles.titulo}>Editar Tratamento</Text>
+                <View style={styles.titleContainer}>
+                    <ImageBackground
+                        source={require("../assets/Rectangle 1.png")}
+                        style={styles.headerBackground}
+                        resizeMode="cover"
+                    >
+                        <Image source={require('../assets/pilula.png')} style={styles.image} />
+                        <Text style={styles.titulo}>Editar Tratamento</Text>
+                    </ImageBackground>
+                </View>
 
                 <TextInput
                     placeholder="Nome do Remédio"
@@ -347,14 +344,22 @@ const AtualizarTratamento = ({ route, navigation }) => {
                 <TouchableOpacity style={styles.botao} onPress={atualizarTratamento}>
                     <Text style={styles.botaoTexto}>Atualizar Tratamento</Text>
                 </TouchableOpacity>
+                <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
+                    <Text style={styles.backButtonText}>Voltar</Text>
+                </Pressable>
             </View>
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, backgroundColor: "#FFF6EE" },
-    titulo: { fontSize: 24, fontWeight: "bold", marginBottom: 20, textAlign: "center" },
+    container: { flex: 1, padding: 9, backgroundColor: "#FFF6EE" },
+    titulo: {
+        fontSize: 24,
+        fontWeight: "bold",
+        marginBottom: -30,
+        textAlign: "center"
+    },
     input: {
         backgroundColor: "#FFF",
         padding: 12,
@@ -366,19 +371,25 @@ const styles = StyleSheet.create({
     },
     radioGroup: { marginBottom: 12 },
     radioLabel: { fontWeight: "bold", marginBottom: 8 },
-    radioButtons: { flexDirection: "row", gap: 12 },
+    radioButtons: {
+        flexDirection: "row",
+        gap: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     radioButton: {
-        padding: 10,
+        padding: 12,
+        margin: 5,
         borderWidth: 1,
         borderColor: "#CCC",
         borderRadius: 6,
     },
     selected: {
-        backgroundColor: "#007AFF",
-        borderColor: "#007AFF",
+        backgroundColor: "#89EBF6",
+        borderColor: "#C0C0C0",
     },
     radioText: { color: "#000" },
-    selectedText: { color: "#FFF" },
+    selectedText: { color: "#000" },
     label: { fontWeight: "bold", marginBottom: 8 },
     customPicker: {
         backgroundColor: "#FFF",
@@ -388,7 +399,9 @@ const styles = StyleSheet.create({
         borderColor: "#CCC",
         marginBottom: 12,
     },
-    customPickerText: { fontSize: 16 },
+    customPickerText: { 
+        fontSize: 16 
+    },
     modalOverlay: {
         flex: 1,
         backgroundColor: "rgba(0,0,0,0.5)",
@@ -435,15 +448,43 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     botaoTexto: {
-        color: "#FFF",
+        color: "#000",
         fontSize: 18,
         fontWeight: "bold",
     },
     image: {
-        width: 80,
-        height: 80,
-        alignSelf: "center",
+        width: 60,
+        height: 60,
+        marginRight: 10,
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 20,
+        padding: 1,
+    },
+    backButton: {
+        marginBottom: 10,
+        alignSelf: 'center',
+        padding: 10,
+        backgroundColor: '#ddd',
+        borderRadius: 8,
+    },
+    backButtonText: {
+        fontSize: 12,
+        color: '#333',
+        fontWeight: 'bold',
+    },
+        headerBackground: {
+        width: 390,
+        height: 190,
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 35,
+        borderRadius: 15,
+        marginTop: -30,
+        overflow: "hidden",
+        padding: 1,
     },
 });
 
