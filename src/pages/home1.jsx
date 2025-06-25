@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, BackHandler, Alert, Animated, ScrollView, ToastAndroid, ActivityIndicator,} from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground, BackHandler, Alert, Animated, ScrollView, ToastAndroid, ActivityIndicator } from "react-native";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { format } from "date-fns";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { ProfileContext } from "../components/ProfileContext"; // ✅ Importando o contexto
 
 export default function HomeScreen({ navigation }) {
   const [tratamentos, setTratamentos] = useState([]);
@@ -10,8 +11,9 @@ export default function HomeScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
   const [expandedCard, setExpandedCard] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
-
   const animatedHeight = useRef({}).current;
+
+  const { profileImage } = useContext(ProfileContext); // ✅ Acessando a imagem do contexto
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,11 +48,9 @@ export default function HomeScreen({ navigation }) {
   const fetchTratamentos = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://35.199.85.189:3333/tratamento");
+      const response = await fetch("http://34.95.189.56:3333/tratamento");
       const data = await response.json();
-
       const lista = Array.isArray(data.message) ? data.message : [];
-
       setTratamentos(lista);
 
       lista.forEach((item) => {
@@ -102,16 +102,13 @@ export default function HomeScreen({ navigation }) {
   const deleteTratamento = async (id) => {
     setDeletingId(id);
     try {
-      const response = await fetch(`http://35.199.85.189:3333/tratamento/${id}`, {
+      const response = await fetch(`http://34.95.189.56:3333/tratamento/${id}`, {
         method: "DELETE",
       });
 
-      if (!response.ok) {
-        throw new Error("Falha ao deletar");
-      }
+      if (!response.ok) throw new Error("Falha ao deletar");
 
       ToastAndroid.show("Tratamento deletado com sucesso!", ToastAndroid.SHORT);
-
       setTratamentos((prev) => prev.filter((item) => item.id_tratamento !== id));
 
       if (expandedCard === id) {
@@ -144,7 +141,11 @@ export default function HomeScreen({ navigation }) {
           <TouchableOpacity onPress={() => navigation.navigate("PerfilScreen")}>
             <Image
               style={styles.headerImage}
-              source={require("../assets/PerfilLogo.png")}
+              source={
+                profileImage
+                  ? { uri: profileImage }
+                  : require("../assets/PerfilLogo.png")
+              }
             />
           </TouchableOpacity>
           <Text style={styles.headerText}>Seja Bem-Vindo</Text>
@@ -152,15 +153,11 @@ export default function HomeScreen({ navigation }) {
       </ImageBackground>
 
       <Text style={styles.text2}>Meus medicamentos:</Text>
-
       <Text style={styles.dateTime}>
         {format(currentDateTime, "dd/MM/yyyy HH:mm:ss")}
       </Text>
 
-      {loading && (
-        <Text style={styles.loadingText}>Carregando tratamentos...</Text>
-      )}
-
+      {loading && <Text style={styles.loadingText}>Carregando tratamentos...</Text>}
       {!loading && tratamentos.length === 0 && (
         <Text style={styles.noData}>Nenhum tratamento encontrado.</Text>
       )}
@@ -176,9 +173,7 @@ export default function HomeScreen({ navigation }) {
               Medicamento: {item.nome_remedio || "Desconhecido"}
             </Text>
             <Text>Tarja: {item.nome_tarja || "Sem Tarja"}</Text>
-            <Text>
-              Dosagem: {item.dosagem ? item.dosagem + "mg" : "Sem dosagem"}
-            </Text>
+            <Text>Dosagem: {item.dosagem ? item.dosagem + "mg" : "Sem dosagem"}</Text>
             <Text>
               📅 Início:{" "}
               {item.data_inicio
@@ -267,6 +262,8 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     marginRight: 10,
+    borderRadius: 45, // deixar redondinho
+
   },
   headerText: {
     fontSize: 24,
@@ -288,13 +285,18 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     color: '#999',
   },
+  noData: {
+    fontStyle: 'italic',
+    marginVertical: 20,
+    color: '#999',
+  },
   card: {
     backgroundColor: '#fff2C9',
     borderRadius: 15,
     padding: 15,
     marginVertical: 8,
-    width: 350,       // largura fixa para padrão
-    alignSelf: 'center', // centraliza horizontalmente
+    width: 350,
+    alignSelf: 'center',
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 3 },
@@ -305,11 +307,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 8,
-  },
-  noData: {
-    fontStyle: 'italic',
-    marginVertical: 20,
-    color: '#999',
   },
   button: {
     width: 234,

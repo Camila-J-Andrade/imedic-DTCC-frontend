@@ -1,5 +1,6 @@
+import React, { useState, useContext } from 'react';  // IMPORTOU useContext aqui
 import { Text, ScrollView, StyleSheet, TextInput, TouchableOpacity, Image, View, Pressable } from 'react-native';
-import React, { useState } from 'react';
+import { ProfileContext } from '../components/ProfileContext'; // IMPORTAR o contexto
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
@@ -7,36 +8,34 @@ export default function Login({ navigation }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const { setUserName } = useContext(ProfileContext); // usar o setter do contexto
+
   const handlelogin = () => {
     setLoading(true);
     setError('');
 
-    fetch("http://35.199.85.189:3333/login/", {         //Não esquecer de sempre atualizar os IP
+    fetch("http://34.95.189.56:3333/login/", {
       method: "POST",
       headers: {
-        Accept: "application/json", // Corrigido
-        "Content-Type": "application/json", // Corrigido
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        email: email,
-        senha: senha
-      }),
+      body: JSON.stringify({ email, senha }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-      setLoading(false);
-      // Verifique se a mensagem indica sucesso
-      if (data.message === "Login efetuado com sucesso") {
-        console.log(data.message); // Exibe a mensagem de sucesso
-        navigation.navigate("TabBar");
-      } else {
-        setError(data.message || 'Falha no login');
-      }
-    })
-    .catch((err) => {
-      setLoading(false);
-      setError('Erro de conexão. Tente Novamente');
-    });
+      .then((response) => response.json())
+      .then((data) => {
+        setLoading(false);
+        if (data.message === "Login efetuado com sucesso") {
+          setUserName(data.nome_completo); // define o nome do usuário no contexto
+          navigation.navigate("TabBar");
+        } else {
+          setError(data.message || 'Falha no login');
+        }
+      })
+      .catch(() => {
+        setLoading(false);
+        setError('Erro de conexão. Tente novamente');
+      });
   };
 
   return (
@@ -49,7 +48,7 @@ export default function Login({ navigation }) {
           placeholderTextColor='#ADADAD'
           value={email}
           onChangeText={setEmail}
-          keyboardType="email-address" // Corrigido
+          keyboardType="email-address"
         />
         <TextInput
           style={styles.input}
@@ -67,7 +66,7 @@ export default function Login({ navigation }) {
       {error ? <Text style={{ color: 'red' }}>{String(error)}</Text> : null}
 
       <View style={styles.ButtonsDiv}>
-        <TouchableOpacity style={styles.botao} onPress={handlelogin/*() => navigation.navigate("TabBar")*/}>
+        <TouchableOpacity style={styles.botao} onPress={handlelogin}>
           <Text style={styles.textBotao}>
             {loading ? 'Carregando...' : 'Login'}
           </Text>
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
     color: '#A9A9A9',
     textAlign: 'left',
     fontSize: 14,
-    width: 265 
+    width: 265
   },
   container2: {
     alignItems: 'center',
@@ -153,5 +152,5 @@ const styles = StyleSheet.create({
   textBotao2: {
     textAlign: 'center',
     color: '#8B8B8B'
-  }   
+  }
 })

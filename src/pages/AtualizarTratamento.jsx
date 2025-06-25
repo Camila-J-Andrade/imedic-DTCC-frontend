@@ -41,7 +41,7 @@ const AtualizarTratamento = ({ route, navigation }) => {
 
     const fetchTarjas = async () => {
         try {
-            const response = await fetch("http://35.199.85.189:3333/tarja");
+            const response = await fetch("http://34.95.189.56:3333/tarja");
             const data = await response.json();
             setListaTarjas(data);
         } catch (error) {
@@ -153,7 +153,7 @@ const AtualizarTratamento = ({ route, navigation }) => {
         }
 
         try {
-            const response = await fetch(`http://35.199.85.189:3333/tratamento/${id}`, {
+            const response = await fetch(`http://34.95.189.56:3333/tratamento/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

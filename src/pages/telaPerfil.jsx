@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ProfileContext } from '../components/ProfileContext';
 
 export default function Perfil({ navigation }) {
-    const { profileImage, setProfileImage } = useContext(ProfileContext);
+    const { profileImage, setProfileImage, userName } = useContext(ProfileContext);
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -44,7 +44,7 @@ export default function Perfil({ navigation }) {
             </View>
 
             {/* Nome do usuário exibido */}
-            <Text style={styles.text2}>Usuario</Text>
+            <Text style={styles.text2}>{userName || 'Usuário'}</Text>
 
             <TouchableOpacity style={styles.button} onPress={pickImage}>
                 <Text style={styles.textButton}>Alterar foto de perfil</Text>
@@ -65,7 +65,7 @@ export default function Perfil({ navigation }) {
             <View style={styles.footer}>
                 <Text style={styles.footerText}>Distribuído por:</Text>
                 <Image source={require('../assets/logoTechFlint.png')} style={styles.marca} />
-                <Text style={styles.footerText}>2024</Text>
+                <Text style={styles.footerText}>2025</Text>
             </View>
         </View>
     );
@@ -134,8 +134,9 @@ const styles = StyleSheet.create({
     text1: {
         fontSize: 26,
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#000',
         zIndex: 1,
+        marginTop: 25,
     },
     text2: {
         marginTop: 10,
@@ -162,4 +163,3 @@ const styles = StyleSheet.create({
         marginVertical: 4,
     },
 });
-

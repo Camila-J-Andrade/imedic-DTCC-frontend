@@ -14,28 +14,31 @@ import PerfilScreen from "./src/pages/telaPerfil.jsx";
 import Setting from "./src/pages/configuracaoScreen.jsx";
 import AtualizarTratamento from "./src/pages/AtualizarTratamento.jsx";
 
-import { TreatmentProvider } from "./src/components/TreatmentContext.jsx"; // Certifique-se do caminho
+import { TreatmentProvider } from "./src/components/TreatmentContext.jsx";
+import { ProfileProvider } from "./src/components/ProfileContext.jsx"; 
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <TreatmentProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Splash" component={SplashScreen} />
-          <Stack.Screen name="Dashboard" component={DashboardScreen} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Cadastro" component={Cadastro} />
-          <Stack.Screen name="TabBar" component={TabBar} />
-          <Stack.Screen name="inserirTratamento" component={inserirTratamento} />
-          <Stack.Screen name="QRCode" component={QRCode} />
-          <Stack.Screen name="PromoTela" component={PromoTela} />
-          <Stack.Screen name="PerfilScreen" component={PerfilScreen} />
-          <Stack.Screen name="Setting" component={Setting} />
-          <Stack.Screen name="AtualizarTratamento" component={AtualizarTratamento} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ProfileProvider> 
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Splash" component={SplashScreen} />
+            <Stack.Screen name="Dashboard" component={DashboardScreen} />
+            <Stack.Screen name="Login" component={Login} />
+            <Stack.Screen name="Cadastro" component={Cadastro} />
+            <Stack.Screen name="TabBar" component={TabBar} />
+            <Stack.Screen name="inserirTratamento" component={inserirTratamento} />
+            <Stack.Screen name="QRCode" component={QRCode} />
+            <Stack.Screen name="PromoTela" component={PromoTela} />
+            <Stack.Screen name="PerfilScreen" component={PerfilScreen} />
+            <Stack.Screen name="Setting" component={Setting} />
+            <Stack.Screen name="AtualizarTratamento" component={AtualizarTratamento} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ProfileProvider>
     </TreatmentProvider>
   );
 }
